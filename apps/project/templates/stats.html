@@ -1,0 +1,53 @@
+[[extend 'layout.html']]
+
+<div class="section" id="app" v-cloak>
+    <div class="field">
+        <label class="label has-text-primary">Search Species</label>
+        <div class="control">
+            <input class="input is-primary" type="text" v-model="searchQuery" placeholder="Enter species name">
+        </div>
+    </div>
+    <div class="box has-background-light mb-4">
+        <h3 class="title is-5">Instructions</h3>
+        <p>Use the search bar above to find a species by name. Click on a species in the table to view the dates and counts of sightings. The graph below will update to show the data for the selected species.</p>
+    </div>
+    <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+            <tr class="has-background-primary-light">
+                <th>Species</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(value, key) in filteredTotals" :key="key" @click="selectSpecies(key)" class="clickable-row">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div v-if="selectedSpecies" class="box has-background-info-light">
+        <h3 class="title is-4 has-text-info">Dates for {{ selectedSpecies }}</h3>
+        <div v-for="date in speciesDates" :key="date.date" class="box has-background-light my-2">
+            <p><strong>Date:</strong> {{ new Date(date.date).toLocaleString() }}</p>
+            <p><strong>Count:</strong> {{ date.count }}</p>
+            <!-- Uncomment if location data should be displayed -->
+            <!-- <p><strong>Location:</strong> {{ date.location }}</p> -->
+        </div>
+    </div>
+    <!-- Separate box for the graph -->
+<!-- Separate box for the graph, only shown if selectedSpecies is not null -->
+<div v-if="selectedSpecies" class="box has-background-light mt-4">
+    <h3 class="title is-5">Visualization</h3>
+    <div id="visualization"></div>
+</div>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+    let load_data_url = "[[=XML(load_data_url)]]";
+</script>
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="js/stats.js"></script>
+[[end]]

@@ -1,0 +1,127 @@
+[[extend 'layout.html']]
+
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: url('giphy.gif') no-repeat center center fixed;
+    background-size: cover;
+  }
+  .leaflet-container {
+    height: 500px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    position: relative; 
+    z-index: 0;
+  }
+  .section {
+    padding: 2rem;
+    position: relative;
+    z-index: 1; 
+  }
+  .map-container {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 0; 
+  }
+  .content-wrapper {
+    background: rgba(255, 255, 255, 0.8); 
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto; 
+    position: relative; 
+    z-index: 2; 
+  }
+  .species-list {
+    max-height: 200px;
+    overflow-y: auto; 
+    position: absolute; 
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9); 
+    z-index: 3;
+  }
+  .list-item {
+    display: block; 
+    padding: 0.5rem; 
+    background-color: white;
+  }
+  .list-item:hover {
+    background-color: #f5f5f5; 
+  }
+  .field {
+    position: relative; /* Ensure the field is properly positioned */
+    z-index: 4; /* Higher z-index for the field */
+  }
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" crossorigin=""/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+<div class="section" id="app" v-cloak>
+  <div class="container">
+    <h1 class="title has-text-centered"><i class="fas fa-dove"></i> Bird Watching</h1>
+    <div class="field has-addons">
+      <div class="control has-icons-left is-expanded">
+        <input class="input" type="text" v-model="searchQuery" @input="filterSpecies" placeholder="Search for a species...">
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+      <div class="control">
+        <button class="button is-light" @click="clearSearch">
+          <span class="icon is-small">
+            <i class="fas fa-times"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div class="species-list" v-if="filteredSpecies.length">
+      <div class="list is-hoverable">
+        <a class="list-item" v-for="species in filteredSpecies" :key="species.id" @click="selectSpecies(species)">
+          {{ species.name }}
+        </a>
+      </div>
+    </div>
+    <div class="map-container">
+      <div id="map" class="box leaflet-container"></div>
+    </div>
+    <div class="buttons is-centered">
+      <a class="button is-primary" @click="sendShapeDataAndRedirectChecklist">
+        <span class="icon">
+          <i class="fas fa-arrow-right"></i>
+        </span>
+        <span>Enter Checklist</span>
+      </a>
+      <button class="button is-primary" @click="sendShapeDataAndRedirectLocation">
+        <span class="icon">
+          <i class="fas fa-info-circle"></i>
+        </span>
+        <span>Region Information</span>
+      </button>
+      <button class="button is-primary" @click="sendShapeDataAndRedirectStats">
+        <span class="icon">
+          <i class="fas fa-chart-bar"></i>
+        </span>
+        <span>User Statistics</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+  let my_callback_url = "[[=XML(my_callback_url)]]";
+  let get_species_coordinates_url = "[[=XML(get_species_coordinates_url)]]";
+  let get_species_url = "[[=XML(get_species_url)]]";
+  let get_all_species_coordinates_url = "[[=XML(get_all_species_coordinates_url)]]";
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.heat/dist/leaflet-heat.js"></script>
+<script src="js/index.js"></script>
+[[end]]

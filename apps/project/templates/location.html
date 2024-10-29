@@ -1,0 +1,86 @@
+[[extend 'layout.html']]
+<head>
+<style>
+[v-cloak] {
+     display: none;
+}
+</style>
+<link href= 
+"https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" 
+          rel="stylesheet"> 
+    <script src= 
+"https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js">     
+    </script> 
+    <script src= 
+"https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"> 
+    </script> 
+<script src="https://d3js.org/d3.v6.js"></script>
+</head>
+
+<div class="section" id="app" v-cloak>
+    <h1>Region Infomation</h1>
+    <div class="section" id="general_infomation">
+        <div class="columns">
+            <div class="column">
+                <div class="card border-info ms-4" id="species_count" >
+                        <header class='card-header'>
+                            <p class="card-header-title">Number of Species</p>
+                        </header>
+                        <div class="card-content">
+                            <p id="species_number">{{species_num}}</p>
+                        </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card border-info ms-4" id="checklist_count">
+                    <header class="card-header">
+                        <p class="card-header-title">Number of Checklists</p>
+                    </header>
+                    <div class="card-content">
+                        <p id="checklist_number">{{num_checklist}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card border-info ms-4" id="sighting_count">
+                    <header class="card-header">
+                        <p class="card-header-title">Total Number of Sighting</p>
+                    </header>
+                    <div class="card-content">
+                            <p id="sighting_number">{{total_sighting}}</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="region_stat">
+        <h1>Species List and Species Sighting Over Time</h1>
+            <select id="selectSpecies"></select>
+            <div id="data_viz"></div>
+            <p v-if="!loaded">loading</p>
+    </div>
+    <div class="section" id="contributor">
+        <h1>Checklists Leaderboard</h1>
+        <p v-if="!loaded">loading</p>
+        <div class="card contribute mt4" v-for="c in top_5" :key="c">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="contributor">User: {{c.user_id}}</p>
+                    </div>
+                    <div class="media-left">
+                        <p class="con_number">{{c.number}} checklists</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+    let location_data = '[[=XML(location_data)]]'
+</script>
+<script src="js/map.js"></script>
+[[end]]
