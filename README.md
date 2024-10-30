@@ -96,7 +96,7 @@ Users should be able to see their own statistics.  This page should show things 
 - A list of all species they have seen, searchable.  When they click on a species, they should see some visualization of when they saw it, and if one liked, even where (you can include a map here). 
 - Some visualization of how their bird-watching has trended in time. 
 
-## Special Thanks
+## Acknowledgments
 
-Thanks to Luca De Alfaro for the idea and the initial design of the project, and for allowing us to make these projects public!
+Thanks to my group members Tom Fu, Kazuma Takahashi, and PakYuen Choi for assisting in the development of the various pages and functionality of the website. Also special thanks to Luca De Alfaro for the idea and the initial design of the project, and for allowing us to make these projects public!
 
